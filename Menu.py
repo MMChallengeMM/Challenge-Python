@@ -1,14 +1,14 @@
-menuLogar = """
-=====================================
-Tela de login.
+menuLogin = """\033[9m
+=====================================\033[29m
+\033[1m\033[4mTela de login.\033[22m\033[24m
 1. Administrador
 2. Operador Geral
 0. Sair
 ====================================="""
 
-menuSistemaAdm = """
-=====================================
-Bem vindo ao sistema de histórico.
+menuSistemaAdm = """\033[9m
+=====================================\033[29m
+\033[1m\033[4mBem vindo ao sistema de histórico.\033[22m\033[24m
 1. Registrar nova falha
 2. Exibir histórico de falhas
 3. Gerar relatório de falhas
@@ -16,9 +16,9 @@ Bem vindo ao sistema de histórico.
 0. Sair
 ====================================="""
 
-menuSistemaGeral = """
-=====================================
-Bem-vindo ao sistema de histórico.
+menuSistemaGeral = """\033[9m
+=====================================\033[29m
+\033[1m\033[4mBem-vindo ao sistema de histórico.\033[22m\033[24m
 1. Exibir histórico de falhas
 2. Gerar relatório de falhas
 3. Voltar para os logins
@@ -36,15 +36,15 @@ def opcaoSair():
 def logarAdm():
     global permissaoAdm
     permissaoAdm = True
-    return "Logado como Administrador."
+    return "\033[93m" + "Logado como Administrador."
 
 def logarGeral():
     global permissaoAdm
     permissaoAdm = False
-    return "Logado como Operador Geral."
+    return "\033[92m" + "Logado como Operador Geral."
 
 def voltarLogin():
-    return "Logging off..."
+    return "Logging off..." + "\033[0m"
 
 def registrarFalha():
     return "Adicionou falha ao sistema"
@@ -55,7 +55,7 @@ def exibeHistorico():
 def exibeRelatorio():
     return "Exibe relatorio"
 
-opcoesLogar = {
+opcoesLogin = {
     0:opcaoSair,
     1:logarAdm,
     2:logarGeral
@@ -78,10 +78,10 @@ opcoesSistemaGeral = {
 
 opcao = -1
 while not opcao == 0:
-    print(menuLogar)
+    print(menuLogin)
     try:
         opcao = int(input("Digite o número da opção desejada:\n"))
-        resultado = opcoesLogar.get(opcao, opcaoPadrao)()
+        resultado = opcoesLogin.get(opcao, opcaoPadrao)()
         print(resultado)
 
         if opcao in [1,2]:
