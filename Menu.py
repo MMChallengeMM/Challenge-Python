@@ -25,6 +25,8 @@ menuSistemaGeral = """\033[9m
 0. Sair
 ====================================="""
 
+#Acima os menus a serem mostrados | Abaixo as funções do sistema
+
 permissaoAdm = False
 
 def opcaoPadrao():
@@ -55,6 +57,8 @@ def exibeHistorico():
 def exibeRelatorio():
     return "Exibe relatorio"
 
+#Acima funções do sistema | Abaixo organização e lógica do menu
+
 opcoesLogin = {
     0:opcaoSair,
     1:logarAdm,
@@ -75,6 +79,23 @@ opcoesSistemaGeral = {
     2:exibeRelatorio,
     3:voltarLogin
 }
+
+# Acima organização | Abaixo lógica do menu
+"""
+Login
+=> Adm 
+    => Add falha (adiciona falha ao sistema)
+    => Ver falhas (mostra um historico de falhas)
+    => Relatorio falhas (mostra o numero de falhas e o maior tipo de falha)
+    => Voltar login (volta a tela de login)
+    => Sair (sai do programa)
+=> Geral
+    => Ver falhas
+    => Relatorio falhas
+    => Voltar login
+    => Sair
+=> Sair
+"""
 
 opcao = -1
 while not opcao == 0:
