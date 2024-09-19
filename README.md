@@ -17,7 +17,7 @@ Este é um sistema simples de histórico de falhas desenvolvido como parte do tr
 
 1. Execute o programa em um ambiente Python:
     ```bash
-    Main.py
+    python Main.py
     ```
 
 2. O programa exibirá um menu de login. Escolha a opção desejada:
