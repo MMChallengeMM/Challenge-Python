@@ -1,3 +1,5 @@
+from datetime import datetime
+
 menuLogin = """\033[9m
 =====================================\033[29m
 \033[1m\033[4mTela de login.\033[22m\033[24m
@@ -27,10 +29,10 @@ menuSistemaGeral = """\033[9m
 0. Sair
 ====================================="""
 
-#Acima os menus a serem mostrados | Abaixo as funções do sistema
+#Acima os menus principais a serem mostrados | Abaixo as funções do sistema
 
-permissaoAdm = False
 listaFalhas = []
+permissaoAdm = False
 
 
 def opcaoInvalida(): return "Opção inválida"
@@ -57,6 +59,7 @@ def voltarLogin(): return "Logging off..." + "\033[0m"
 def registrarFalha():
     falha = {
         "idFalha": len(listaFalhas) + 1,
+        "data": datetime.today().strftime("%d/%m/%Y - %H:%M"),
         "tipo": tipoFalha(),
         "descricao": input("Digite a descricao:\n")}
     listaFalhas.append(falha)
@@ -69,9 +72,10 @@ def exibeHistorico():
 
     for falha in listaFalhas:
         idFalha = falha["idFalha"]
-        tipoFalha = falha["tipo"]
+        dataFalha = falha["data"]
+        tipo = falha["tipo"]
         descricaoFalha = falha["descricao"]
-        historico += f"#{idFalha} : {tipoFalha} - {descricaoFalha}\n"
+        historico += f"#{idFalha} ({dataFalha}) : {tipo} - {descricaoFalha}\n"
 
     if historico == "":
         historico = "Não há registros"
@@ -79,12 +83,24 @@ def exibeHistorico():
     return "Histórico de falhas:\n" + historico
 
 
-def exibeRelatorio(): return "Exibe relatorio"
+def exibeRelatorio():
+
+    listaTipos = []
+
+    for falha in listaFalhas:
+        listaTipos.append(falha["tipo"])
+
+    return (f"Relatório de falhas:\n"
+            f"Número de falhas: {len(listaFalhas)}\n"
+            f"Falha mais frequente: {max(listaTipos,key=listaTipos.count)}")
 
 
 def tipoFalha():
-    menuTipoFalha = """1.MECANICA
-2.ELETRICO
+    menuTipoFalha = """
+=====================================
+Tipos de falhas:
+1.MECANICA
+2.ELETRICA
 3.SOFTWARE
 0.OUTRO"""
 
@@ -101,25 +117,24 @@ def tipoFalha():
     }
 
     print(menuTipoFalha)
-    opcao = int(input("Digite o número da opção desejada:\n"))
-    if not opcao in [0,1,2,3]:
+    escolha = int(input("Digite o número da opção desejada:\n"))
+    if not escolha in [0, 1, 2, 3]:
         print(opcaoInvalida())
         return tipoFalha()
     else:
-        resultado = opcoesTipoFalha.get(opcao, opcaoInvalida)()
-        return resultado
+        resposta = opcoesTipoFalha.get(escolha)()
+        return resposta
 
+def formatoMenu(telaMenu, opcoesMenu, numeroOpcoes):
+    print(telaMenu)
+    escolha = int(input("Digite o número da opção desejada:\n"))
+    if not escolha in numeroOpcoes:
+        print(opcaoInvalida())
+        return formatoMenu(telaMenu, opcoesMenu, numeroOpcoes)
+    else:
+        resposta = opcoesMenu.get(escolha)()
+        return resposta
 
-# def formatoMenu(telaMenu, opcoesMenu):
-#     opcao = -1
-#     while not opcao == 0:
-#         print(telaMenu)
-#         try:
-#             opcao = int(input("Digite o número da opção desejada:\n"))
-#             resultado = opcoesMenu.get(opcao, opcaoPadrao)()
-#             print(resultado)
-#         except ValueError:
-#             print("Valor inválido")
 
 #Acima funções do sistema | Abaixo organização e lógica dos menus
 
@@ -166,31 +181,40 @@ Login
 
 opcao = -1
 while not opcao == 0:
-    print(menuLogin)
     try:
+        print(menuLogin)
         opcao = int(input("Digite o número da opção desejada:\n"))
-        resultado = opcoesLogin.get(opcao, opcaoInvalida)()
-        print(resultado)
-
-        if opcao in [1,2]:
-            opcao = -1
-            while not opcao == 0:
-                try:
-                    if permissaoAdm:
-                        print(menuSistemaAdm)
-                        opcao = int(input("Digite o número da opção desejada:\n"))
-                        resultado = opcoesSistemaAdm.get(opcao, opcaoInvalida)()
-                        print(resultado)
-                        if opcao == 4:
-                            break
-                    else:
-                        print(menuSistemaGeral)
-                        opcao = int(input("Digite o número da opção desejada:\n"))
-                        resultado = opcoesSistemaGeral.get(opcao, opcaoInvalida)()
-                        print(resultado)
-                        if opcao == 3:
-                            break
-                except ValueError:
-                    print("Valor inválido")
+        if not opcao in [0,1,2]:
+            print(opcaoInvalida())
+        else:
+            resultado = opcoesLogin.get(opcao)()
+            print(resultado)
+            if opcao in [1,2]:
+                opcao = -1
+                while not opcao == 0:
+                    try:
+                        if permissaoAdm:
+                            print(menuSistemaAdm)
+                            opcao = int(input("Digite o número da opção desejada:\n"))
+                            if not opcao in [0,1,2,3,4]:
+                                print(opcaoInvalida())
+                            else:
+                                resultado = opcoesSistemaAdm.get(opcao)()
+                                print(resultado)
+                                if opcao == 4:
+                                    break
+                        else:
+                            print(menuSistemaGeral)
+                            opcao = int(input("Digite o número da opção desejada:\n"))
+                            if not opcao in [0,1,2,3]:
+                                print(opcaoInvalida())
+                            else:
+                                resultado = opcoesSistemaGeral.get(opcao)()
+                                print(resultado)
+                                if opcao == 3:
+                                    break
+                    except ValueError:
+                        print("Valor inválido")
     except ValueError:
         print("Valor inválido")
+
