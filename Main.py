@@ -125,18 +125,8 @@ Tipos de falhas:
         resposta = opcoesTipoFalha.get(escolha)()
         return resposta
 
-def formatoMenu(telaMenu, opcoesMenu, numeroOpcoes):
-    print(telaMenu)
-    escolha = int(input("Digite o número da opção desejada:\n"))
-    if not escolha in numeroOpcoes:
-        print(opcaoInvalida())
-        return formatoMenu(telaMenu, opcoesMenu, numeroOpcoes)
-    else:
-        resposta = opcoesMenu.get(escolha)()
-        return resposta
 
-
-#Acima funções do sistema | Abaixo organização e lógica dos menus
+#Acima funções do sistema | Abaixo organização e lógica dos menus principais
 
 opcoesLogin = {
     0:opcaoSair,
@@ -217,4 +207,3 @@ while not opcao == 0:
                         print("Valor inválido")
     except ValueError:
         print("Valor inválido")
-
