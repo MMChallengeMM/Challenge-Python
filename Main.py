@@ -4,10 +4,9 @@ menuLogin = """\033[9m
 =====================================\033[29m
 \033[1m\033[4mTela de login.\033[22m\033[24m
 1. Administrador
-2. Operador Geral
+2. Operador
 0. Sair
 ====================================="""
-
 
 menuSistemaAdm = """\033[9m
 =====================================\033[29m
@@ -19,17 +18,16 @@ menuSistemaAdm = """\033[9m
 0. Sair
 ====================================="""
 
-
-menuSistemaGeral = """\033[9m
+menuSistema = """\033[9m
 =====================================\033[29m
-\033[1m\033[4mBem-vindo ao sistema de histórico.\033[22m\033[24m
+\033[1;4mBem-vindo ao sistema de histórico.\033[22m\033[24m
 1. Exibir histórico de falhas
 2. Gerar relatório de falhas
 3. Voltar para os logins
 0. Sair
 ====================================="""
 
-#Acima os menus principais a serem mostrados | Abaixo as funções do sistema
+# Acima os menus principais a serem mostrados | Abaixo as funções do sistema
 
 listaFalhas = []
 permissaoAdm = False
@@ -49,10 +47,10 @@ def logarAdm():
     return "\033[93m" + "Logado como Administrador."
 
 
-def logarGeral():
+def logarOperador():
     global permissaoAdm
     permissaoAdm = False
-    return "\033[92m" + "Logado como Operador Geral."
+    return "\033[92m" + "Logado como Operador."
 
 
 def voltarLogin():
@@ -70,7 +68,6 @@ def registrarFalha():
 
 
 def exibeHistorico():
-
     historico = ""
 
     for falha in listaFalhas:
@@ -87,7 +84,6 @@ def exibeHistorico():
 
 
 def exibeRelatorio():
-
     listaTipos = []
 
     for falha in listaFalhas:
@@ -95,7 +91,7 @@ def exibeRelatorio():
 
     return (f"Relatório de falhas:\n"
             f"Número de falhas: {len(listaFalhas)}\n"
-            f"Falha mais frequente: {max(listaTipos,key=listaTipos.count)}")
+            f"Falha mais frequente: {max(listaTipos, key=listaTipos.count)}")
 
 
 def tipoFalha():
@@ -107,16 +103,23 @@ Tipos de falhas:
 3.SOFTWARE
 0.OUTRO"""
 
-    def tipoFalhaOutro(): return "OUTRO"
-    def tipoFalhaMecanica(): return "MECANICA"
-    def tipoFalhaEletrica(): return "ELETRICA"
-    def tipoFalhaSoftware(): return "SOFTWARE"
+    def tipoFalhaOutro():
+        return "OUTRO"
+
+    def tipoFalhaMecanica():
+        return "MECANICA"
+
+    def tipoFalhaEletrica():
+        return "ELETRICA"
+
+    def tipoFalhaSoftware():
+        return "SOFTWARE"
 
     opcoesTipoFalha = {
-        0:tipoFalhaOutro,
-        1:tipoFalhaMecanica,
-        2:tipoFalhaEletrica,
-        3:tipoFalhaSoftware
+        0: tipoFalhaOutro,
+        1: tipoFalhaMecanica,
+        2: tipoFalhaEletrica,
+        3: tipoFalhaSoftware
     }
 
     print(menuTipoFalha)
@@ -129,31 +132,28 @@ Tipos de falhas:
         return resposta
 
 
-#Acima funções do sistema | Abaixo organização e lógica dos menus principais
+# Acima funções do sistema | Abaixo organização e lógica dos menus principais
 
 opcoesLogin = {
-    0:opcaoSair,
-    1:logarAdm,
-    2:logarGeral
+    0: opcaoSair,
+    1: logarAdm,
+    2: logarOperador
 }
-
 
 opcoesSistemaAdm = {
-    0:opcaoSair,
-    1:registrarFalha,
-    2:exibeHistorico,
-    3:exibeRelatorio,
-    4:voltarLogin
+    0: opcaoSair,
+    1: registrarFalha,
+    2: exibeHistorico,
+    3: exibeRelatorio,
+    4: voltarLogin
 }
 
-
-opcoesSistemaGeral = {
-    0:opcaoSair,
-    1:exibeHistorico,
-    2:exibeRelatorio,
-    3:voltarLogin
+opcoesSistema = {
+    0: opcaoSair,
+    1: exibeHistorico,
+    2: exibeRelatorio,
+    3: voltarLogin
 }
-
 
 # Acima organização | Abaixo lógica do menu
 """
@@ -177,19 +177,19 @@ while not opcao == 0:
     try:
         print(menuLogin)
         opcao = int(input("Digite o número da opção desejada:\n"))
-        if not opcao in [0,1,2]:
+        if not opcao in [0, 1, 2]:
             print(opcaoInvalida())
         else:
             resultado = opcoesLogin.get(opcao)()
             print(resultado)
-            if opcao in [1,2]:
+            if opcao in [1, 2]:
                 opcao = -1
                 while not opcao == 0:
                     try:
                         if permissaoAdm:
                             print(menuSistemaAdm)
                             opcao = int(input("Digite o número da opção desejada:\n"))
-                            if not opcao in [0,1,2,3,4]:
+                            if not opcao in [0, 1, 2, 3, 4]:
                                 print(opcaoInvalida())
                             else:
                                 resultado = opcoesSistemaAdm.get(opcao)()
@@ -197,12 +197,12 @@ while not opcao == 0:
                                 if opcao == 4:
                                     break
                         else:
-                            print(menuSistemaGeral)
+                            print(menuSistema)
                             opcao = int(input("Digite o número da opção desejada:\n"))
-                            if not opcao in [0,1,2,3]:
+                            if not opcao in [0, 1, 2, 3]:
                                 print(opcaoInvalida())
                             else:
-                                resultado = opcoesSistemaGeral.get(opcao)()
+                                resultado = opcoesSistema.get(opcao)()
                                 print(resultado)
                                 if opcao == 3:
                                     break
