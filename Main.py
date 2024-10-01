@@ -35,10 +35,12 @@ listaFalhas = []
 permissaoAdm = False
 
 
-def opcaoInvalida(): return "Opção inválida"
+def opcaoInvalida():
+    return "Opção inválida"
 
 
-def opcaoSair(): return "Agradeço por usar. Saindo..."
+def opcaoSair():
+    return "Agradeço por usar. Saindo..."
 
 
 def logarAdm():
@@ -53,7 +55,8 @@ def logarGeral():
     return "\033[92m" + "Logado como Operador Geral."
 
 
-def voltarLogin(): return "Logging off..." + "\033[0m"
+def voltarLogin():
+    return "Logging off..." + "\033[0m"
 
 
 def registrarFalha():
