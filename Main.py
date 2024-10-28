@@ -111,7 +111,7 @@ def exibe_historico():
         descricao_falha = falha["descricao"]
         historico += f"#{id_falha} ({data_falha}) : {tipo} - {descricao_falha}\n"
 
-    if historico == "":
+    if historico is "":
         historico = "Não há registros"
 
     return "Histórico de falhas:\n" + historico
@@ -120,7 +120,7 @@ def exibe_historico():
 def exibe_relatorio():
     lista_tipos = []
 
-    if len(lista_falhas) == 0:
+    if len(lista_falhas) is 0:
         return "Não há falhas para o relatório"
 
     for falha in lista_falhas:
@@ -209,7 +209,7 @@ Login
 """
 
 opcao = -1
-while not opcao == 0:
+while not opcao is 0:
     try:
         print(menu_login)
         opcao = int(input("Digite o número da opção desejada:\n"))
@@ -220,7 +220,7 @@ while not opcao == 0:
             print(resultado)
             if opcao in [1, 2]:
                 opcao = -1
-                while not opcao == 0:
+                while not opcao is 0:
                     try:
                         if permissao_adm:
                             print(menu_sistema_adm)
@@ -230,7 +230,7 @@ while not opcao == 0:
                             else:
                                 resultado = opcoes_sistema_adm.get(opcao)()
                                 print(resultado)
-                                if opcao == 4:
+                                if opcao is 4:
                                     break
                         else:
                             print(menu_sistema)
@@ -240,7 +240,7 @@ while not opcao == 0:
                             else:
                                 resultado = opcoes_sistema.get(opcao)()
                                 print(resultado)
-                                if opcao == 3:
+                                if opcao is 3:
                                     break
                     except ValueError:
                         print(valor_invalido())
