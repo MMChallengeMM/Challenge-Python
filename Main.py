@@ -93,12 +93,12 @@ def voltar_login():
 
 def registrar_falha():
     falha = {
-        "idFalha": len(lista_falhas) + 1,
+        "id_falha": len(lista_falhas) + 1,
         "data": datetime.today().strftime("%d/%m/%Y - %H:%M"),
         "tipo": tipo_falha(),
         "descricao": input("Digite a descricao:\n")}
     lista_falhas.append(falha)
-    return f"Falha #{falha["idFalha"]} adicionada ao sistema."
+    return f"Falha #{falha["id_falha"]} adicionada ao sistema."
 
 
 def exibe_historico():
@@ -111,7 +111,7 @@ def exibe_historico():
         descricao_falha = falha["descricao"]
         historico += f"#{id_falha} ({data_falha}) : {tipo} - {descricao_falha}\n"
 
-    if historico is "":
+    if historico == "":
         historico = "Não há registros"
 
     return "Histórico de falhas:\n" + historico
@@ -120,7 +120,7 @@ def exibe_historico():
 def exibe_relatorio():
     lista_tipos = []
 
-    if len(lista_falhas) is 0:
+    if len(lista_falhas) == 0:
         return "Não há falhas para o relatório"
 
     for falha in lista_falhas:
@@ -137,7 +137,8 @@ def tipo_falha():
                      "1.MECANICA\n"
                      "2.ELETRICA\n"
                      "3.SOFTWARE\n"
-                     "0.OUTRO")
+                     "0.OUTRO\n"
+                     "=====================================")
 
     def tipo_falha_outro():
         return "OUTRO"
@@ -209,38 +210,38 @@ Login
 """
 
 opcao = -1
-while not opcao is 0:
+while not opcao == 0:
     try:
         print(menu_login)
         opcao = int(input("Digite o número da opção desejada:\n"))
-        if not opcao in [0, 1, 2]:
+        if opcao not in [0, 1, 2]:
             print(opcao_invalida())
         else:
             resultado = opcoes_login.get(opcao)()
             print(resultado)
             if opcao in [1, 2]:
                 opcao = -1
-                while not opcao is 0:
+                while opcao != 0:
                     try:
                         if permissao_adm:
                             print(menu_sistema_adm)
                             opcao = int(input("Digite o número da opção desejada:\n"))
-                            if not opcao in [0, 1, 2, 3, 4]:
+                            if opcao not in [0, 1, 2, 3, 4]:
                                 print(opcao_invalida())
                             else:
                                 resultado = opcoes_sistema_adm.get(opcao)()
                                 print(resultado)
-                                if opcao is 4:
+                                if opcao == 4:
                                     break
                         else:
                             print(menu_sistema)
                             opcao = int(input("Digite o número da opção desejada:\n"))
-                            if not opcao in [0, 1, 2, 3]:
+                            if opcao not in [0, 1, 2, 3]:
                                 print(opcao_invalida())
                             else:
                                 resultado = opcoes_sistema.get(opcao)()
                                 print(resultado)
-                                if opcao is 3:
+                                if opcao == 3:
                                     break
                     except ValueError:
                         print(valor_invalido())
