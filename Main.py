@@ -1,30 +1,30 @@
 from datetime import datetime
 
 menu_login = ("\033[9m"
-              
+
               "\n=====================================\n"
-              
+
               "\033[1;4;29m"
-              
+
               "Tela de login.\n"
-              
+
               "\033[22;24m"
-              
+
               "1. Administrador\n"
               "2. Operador\n"
               "0. Sair\n"
               "=====================================")
 
 menu_sistema_adm = ("\033[9m"
-                    
+
                     "\n=====================================\n"
-                    
+
                     "\033[1;4;29m"
-                    
+
                     "Bem vindo ao sistema de histórico.\n"
-                    
+
                     "\033[22;24m"
-                    
+
                     "1. Registrar nova falha\n"
                     "2. Exibir histórico de falhas\n"
                     "3. Gerar relatório de falhas\n"
@@ -33,15 +33,15 @@ menu_sistema_adm = ("\033[9m"
                     "=====================================")
 
 menu_sistema = ("\033[9m"
-                
+
                 "\n=====================================\n"
-                
+
                 "\033[1;4;29m"
-                
+
                 "Bem-vindo ao sistema de histórico.\n"
-                
+
                 "\033[22;24m"
-                
+
                 "1. Exibir histórico de falhas\n"
                 "2. Gerar relatório de falhas\n"
                 "3. Voltar para os logins\n"
@@ -60,10 +60,10 @@ def valor_invalido():
             "\033[22m")
 
 
-def opcao_invalida():
-    return ("\033[1m"
+def opcao_invalida(cor_original):
+    return ("\033[1;91m"
             "Opção inválida"
-            "\033[22m")
+            f"\033[22;{cor_original}m")
 
 
 def opcao_sair():
@@ -132,13 +132,13 @@ def exibe_relatorio():
 
 
 def tipo_falha():
-    menuTipoFalha = ("\n=====================================\n"
-                     "Tipos de falhas:\n"
-                     "1.MECANICA\n"
-                     "2.ELETRICA\n"
-                     "3.SOFTWARE\n"
-                     "0.OUTRO\n"
-                     "=====================================")
+    menu_tipo_falha = ("\n=====================================\n"
+                       "Tipos de falhas:\n"
+                       "1.MECANICA\n"
+                       "2.ELETRICA\n"
+                       "3.SOFTWARE\n"
+                       "0.OUTRO\n"
+                       "=====================================")
 
     def tipo_falha_outro():
         return "OUTRO"
@@ -159,10 +159,10 @@ def tipo_falha():
         3: tipo_falha_software
     }
 
-    print(menuTipoFalha)
+    print(menu_tipo_falha)
     escolha = int(input("Digite o número da opção desejada:\n"))
-    if not escolha in [0, 1, 2, 3]:
-        print(opcao_invalida())
+    if escolha not in [0, 1, 2, 3]:
+        print(opcao_invalida(93))
         return tipo_falha()
     else:
         resposta = opcoes_tipo_falha.get(escolha)()
@@ -215,7 +215,7 @@ while not opcao == 0:
         print(menu_login)
         opcao = int(input("Digite o número da opção desejada:\n"))
         if opcao not in [0, 1, 2]:
-            print(opcao_invalida())
+            print(opcao_invalida(0))
         else:
             resultado = opcoes_login.get(opcao)()
             print(resultado)
@@ -227,7 +227,7 @@ while not opcao == 0:
                             print(menu_sistema_adm)
                             opcao = int(input("Digite o número da opção desejada:\n"))
                             if opcao not in [0, 1, 2, 3, 4]:
-                                print(opcao_invalida())
+                                print(opcao_invalida(93))
                             else:
                                 resultado = opcoes_sistema_adm.get(opcao)()
                                 print(resultado)
@@ -237,7 +237,7 @@ while not opcao == 0:
                             print(menu_sistema)
                             opcao = int(input("Digite o número da opção desejada:\n"))
                             if opcao not in [0, 1, 2, 3]:
-                                print(opcao_invalida())
+                                print(opcao_invalida(92))
                             else:
                                 resultado = opcoes_sistema.get(opcao)()
                                 print(resultado)
