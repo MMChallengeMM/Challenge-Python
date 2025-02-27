@@ -1,249 +1,240 @@
+import json
 from datetime import datetime
 
-menu_login = ("\033[9m"
 
-              "\n=====================================\n"
+def load_json(json_name: str = "failures.json") -> list:
+    """Tenta carregar uma lista a partir de um arquivo JSON com o nome indicado. Caso não exista, cria o arquivo e
+    retorna a lista vazia."""
 
-              "\033[1;4;29m"
+    def create_json(name: str = "failures.json"):
+        """Cria um arquivo JSON contendo uma lista vazia com o nome indicado."""
+        with open(name, "w", encoding="utf-8") as f:
+            json.dump([], f, indent=4)
 
-              "Tela de login.\n"
-
-              "\033[22;24m"
-
-              "1. Administrador\n"
-              "2. Operador\n"
-              "0. Sair\n"
-              "=====================================")
-
-menu_sistema_adm = ("\033[9m"
-
-                    "\n=====================================\n"
-
-                    "\033[1;4;29m"
-
-                    "Bem vindo ao sistema de histórico.\n"
-
-                    "\033[22;24m"
-
-                    "1. Registrar nova falha\n"
-                    "2. Exibir histórico de falhas\n"
-                    "3. Gerar relatório de falhas\n"
-                    "4. Voltar para os logins\n"
-                    "0. Sair\n"
-                    "=====================================")
-
-menu_sistema = ("\033[9m"
-
-                "\n=====================================\n"
-
-                "\033[1;4;29m"
-
-                "Bem-vindo ao sistema de histórico.\n"
-
-                "\033[22;24m"
-
-                "1. Exibir histórico de falhas\n"
-                "2. Gerar relatório de falhas\n"
-                "3. Voltar para os logins\n"
-                "0. Sair\n"
-                "=====================================")
-
-# Acima os menus principais a serem mostrados | Abaixo as funções do sistema
-
-lista_falhas = []
-permissao_adm = False
-
-
-def valor_invalido():
-    return ("\033[1m"
-            "Valor inválido"
-            "\033[22m")
-
-
-def opcao_invalida(cor_original):
-    return ("\033[1;91m"
-            "Opção inválida"
-            f"\033[22;{cor_original}m")
-
-
-def opcao_sair():
-    return ("\033[7m"
-            "Agradeço por usar. Saindo..."
-            "\033[27m")
-
-
-def logar_adm():
-    global permissao_adm
-    permissao_adm = True
-    return ("\033[93m"
-            "Logado como Administrador.")
-
-
-def logar_operador():
-    global permissao_adm
-    permissao_adm = False
-    return ("\033[92m"
-            "Logado como Operador.")
-
-
-def voltar_login():
-    return ("Logging off..."
-            "\033[0m")
-
-
-def registrar_falha():
-    falha = {
-        "id_falha": len(lista_falhas) + 1,
-        "data": datetime.today().strftime("%d/%m/%Y - %H:%M"),
-        "tipo": tipo_falha(),
-        "descricao": input("Digite a descricao:\n")}
-    lista_falhas.append(falha)
-    return f"Falha #{falha["id_falha"]} adicionada ao sistema."
-
-
-def exibe_historico():
-    historico = ""
-
-    for falha in lista_falhas:
-        id_falha = falha["id_falha"]
-        data_falha = falha["data"]
-        tipo = falha["tipo"]
-        descricao_falha = falha["descricao"]
-        historico += f"#{id_falha} ({data_falha}) : {tipo} - {descricao_falha}\n"
-
-    if historico == "":
-        historico = "Não há registros"
-
-    return "Histórico de falhas:\n" + historico
-
-
-def exibe_relatorio():
-    lista_tipos = []
-
-    if len(lista_falhas) == 0:
-        return "Não há falhas para o relatório"
-
-    for falha in lista_falhas:
-        lista_tipos.append(falha["tipo"])
-
-    return (f"Relatório de falhas:\n"
-            f"Número de falhas: {len(lista_falhas)}\n"
-            f"Falha mais frequente: {max(lista_tipos, key=lista_tipos.count)}")
-
-
-def tipo_falha():
-    menu_tipo_falha = ("\n=====================================\n"
-                       "Tipos de falhas:\n"
-                       "1.MECANICA\n"
-                       "2.ELETRICA\n"
-                       "3.SOFTWARE\n"
-                       "0.OUTRO\n"
-                       "=====================================")
-
-    def tipo_falha_outro():
-        return "OUTRO"
-
-    def tipo_falha_mecanica():
-        return "MECANICA"
-
-    def tipo_falha_eletrica():
-        return "ELETRICA"
-
-    def tipo_falha_software():
-        return "SOFTWARE"
-
-    opcoes_tipo_falha = {
-        0: tipo_falha_outro,
-        1: tipo_falha_mecanica,
-        2: tipo_falha_eletrica,
-        3: tipo_falha_software
-    }
-
-    print(menu_tipo_falha)
-    escolha = int(input("Digite o número da opção desejada:\n"))
-    if escolha not in [0, 1, 2, 3]:
-        print(opcao_invalida(93))
-        return tipo_falha()
-    else:
-        resposta = opcoes_tipo_falha.get(escolha)()
-        return resposta
-
-
-# Acima funções do sistema | Abaixo organização e lógica dos menus principais
-
-opcoes_login = {
-    0: opcao_sair,
-    1: logar_adm,
-    2: logar_operador
-}
-
-opcoes_sistema_adm = {
-    0: opcao_sair,
-    1: registrar_falha,
-    2: exibe_historico,
-    3: exibe_relatorio,
-    4: voltar_login
-}
-
-opcoes_sistema = {
-    0: opcao_sair,
-    1: exibe_historico,
-    2: exibe_relatorio,
-    3: voltar_login
-}
-
-# Acima organização | Abaixo lógica do menu
-"""
-Login
-=> Adm 
-    => Add falha (adiciona falha ao sistema)
-    => Ver falhas (mostra um historico de falhas)
-    => Relatorio falhas (mostra o numero de falhas e o maior tipo de falha)
-    => Voltar login (volta a tela de login)
-    => Sair (sai do programa)
-=> Geral
-    => Ver falhas
-    => Relatorio falhas
-    => Voltar login
-    => Sair
-=> Sair
-"""
-
-opcao = -1
-while not opcao == 0:
     try:
-        print(menu_login)
-        opcao = int(input("Digite o número da opção desejada:\n"))
-        if opcao not in [0, 1, 2]:
-            print(opcao_invalida(0))
-        else:
-            resultado = opcoes_login.get(opcao)()
-            print(resultado)
-            if opcao in [1, 2]:
-                opcao = -1
-                while opcao != 0:
-                    try:
-                        if permissao_adm:
-                            print(menu_sistema_adm)
-                            opcao = int(input("Digite o número da opção desejada:\n"))
-                            if opcao not in [0, 1, 2, 3, 4]:
-                                print(opcao_invalida(93))
-                            else:
-                                resultado = opcoes_sistema_adm.get(opcao)()
-                                print(resultado)
-                                if opcao == 4:
-                                    break
-                        else:
-                            print(menu_sistema)
-                            opcao = int(input("Digite o número da opção desejada:\n"))
-                            if opcao not in [0, 1, 2, 3]:
-                                print(opcao_invalida(92))
-                            else:
-                                resultado = opcoes_sistema.get(opcao)()
-                                print(resultado)
-                                if opcao == 3:
-                                    break
-                    except ValueError:
-                        print(valor_invalido())
-    except ValueError:
-        print(valor_invalido())
+        with open(json_name, "r") as file:
+            return json.load(file)
+
+    except FileNotFoundError:
+        create_json(json_name)
+        return load_json(json_name)
+
+
+def save_on_json(list_to_save: list, json_name: str = "failures.json"):
+    """Salva uma lista no arquivo JSON indicado. Caso o arquivo não exista, ele será criado antes de salvar os dados."""
+    load_json(json_name)
+    with open(json_name, "w", encoding="utf-8") as file:
+        json.dump(list_to_save, file, indent=4)
+
+
+def create_failure():
+    """Cria um registro de falha (ID, data, tipo, descrição) e o salva em um arquivo JSON."""
+
+    def generate_failure_type() -> str:
+        """Retorna um str com o tipo de falha para colocar no sistema."""
+        while True:
+            try:
+                print("\nEscolha o tipo de falha:\n" + "=" * 50 +
+                      "\n1. Mecânica\n"
+                      "2. Elétrica\n"
+                      "3. Software\n"
+                      "4. Outro\n" +
+                      "-" * 50)
+                option = int(input("Digite a opção desejada:\n"))
+                match option:
+                    case 1:
+                        return "MECANICA"
+                    case 2:
+                        return "ELETRICA"
+                    case 3:
+                        return "SOFTWARE"
+                    case 4:
+                        return "OUTRO"
+                    case _:
+                        print("Opção Inválida")
+            except ValueError:
+                print("Valor inválido")
+
+    failures_list = load_json()
+    falha = {
+        "failure_id": len(failures_list) + 1,
+        "date": datetime.today().strftime("%d/%m/%Y - %H:%M"),
+        "type": generate_failure_type(),
+        "description": input("Digite a descrição da falha:\n"),
+        "on_report": False
+    }
+    failures_list.append(falha)
+    save_on_json(failures_list)
+    print(f"Falha #{falha['failure_id']} adicionada ao sistema.\n")
+
+
+def generate_report() -> None:
+    """Gera um relatório básico de falhas (ID, falha mais frequente, número total de falhas não reportadas) e o salva
+    em um JSON, atualizando o status das falhas reportadas."""
+
+    all_failures = load_json()
+    failures_on_report = [failure for failure in all_failures if failure["on_report"] is True]
+
+    failures_to_report = [failure for failure in all_failures if failure["on_report"] is False]
+    if len(failures_to_report) == 0:
+        print("Não há falhas para reportar.")
+        return
+
+    report_list = load_json("reports.json")
+    fail_types = [failure["type"] for failure in failures_to_report]
+    report = {
+        "id_report": len(report_list) + 1,
+        "most_frequent_failure": max(fail_types, key=fail_types.count),
+        "number_of_failures": len(failures_to_report)
+    }
+    report_list.append(report)
+
+    for failure in failures_to_report:
+        failure["on_report"] = True
+
+    all_failures = failures_on_report + failures_to_report
+
+    save_on_json(all_failures)
+    save_on_json(report_list, "reports.json")
+
+    print(f"Relatório #{report['id_report']}:\n"
+          f"Falha mais frequente: {report['most_frequent_failure']}\n"
+          f"Número de falhas: {report['number_of_failures']}")
+
+
+def start_system(adm_permission: bool = False) -> int:
+    """Inicia o sistema, recebe a permissão de administrador (se aplicável) e retorna um inteiro para ser usado no
+    menu de login."""
+
+    def show_failure_history() -> None:
+        """Mostra o histórico de falhas formatado."""
+        history = ""
+
+        for fail in load_json():
+            fail_id = fail["failure_id"]
+            fail_date = fail["date"]
+            fail_type = fail["type"]
+            fail_description = fail["description"]
+            history += f"#{fail_id} ({fail_date}) | {fail_type} - {fail_description}\n"
+
+        if history == "":
+            history = "Não há registros"
+
+        print(f"Dados do histórico:\n{history}")
+
+    def show_report_history() -> None:
+        """Mostra o histórico de relatórios formatado."""
+        history = ""
+
+        for report in load_json("reports.json"):
+            report_id = report["id_report"]
+            report_frequent_failure = report["most_frequent_failure"]
+            report_num_failures = report["number_of_failures"]
+            history += f"#{report_id} | {report_frequent_failure} - Número de falhas: {report_num_failures}\n"
+
+        if history == "":
+            history = "Não há registros"
+
+        print(f"Dados do histórico:\n{history}")
+
+    system_menu_adm = ("\nBem-vindo, Administrador!\n" + "=" * 50 +
+                       "\n1. Registrar nova falha\n"
+                       "2. Exibir histórico de falhas\n"
+                       "3. Gerar relatório de falhas\n"
+                       "4. Exibir histórico de relatórios\n"
+                       "5. Voltar para os logins\n"
+                       "0. Sair\n" +
+                       "-" * 50)
+
+    system_menu = ("\nBem-vindo, Operador!\n" + "=" * 50 +
+                   "\n1. Registrar nova falha\n"
+                   "2. Exibir histórico de falhas\n"
+                   "3. Exibir histórico de relatórios\n"
+                   "4. Voltar para os logins\n"
+                   "0. Sair\n" +
+                   "-" * 50)
+
+    menu = system_menu_adm if adm_permission else system_menu
+    if adm_permission:
+        while True:
+            try:
+                print(menu)
+                option = int(input("Digite a opção desejada:\n"))
+
+                match option:
+                    case 0:
+                        return 0
+                    case 1:
+                        create_failure()
+                    case 2:
+                        show_failure_history()
+                    case 3:
+                        generate_report()
+                    case 4:
+                        show_report_history()
+                    case 5:
+                        return -1
+                    case _:
+                        print("Opção Inválida")
+            except ValueError:
+                print("Valor inválido")
+    else:
+        while True:
+            try:
+                print(menu)
+                option = int(input("Digite a opção desejada:\n"))
+
+                match option:
+                    case 0:
+                        return 0
+                    case 1:
+                        create_failure()
+                    case 2:
+                        show_failure_history()
+                    case 3:
+                        show_report_history()
+                    case 4:
+                        return -1
+                    case _:
+                        print("Opção Inválida")
+            except ValueError:
+                print("Valor inválido")
+
+
+def start_login() -> None:
+    """Exibe o menu de login para operadores e administradores."""
+    option = -1
+    login_menu = ("\nEscolha um:\n"
+                  "1. Operador\n"
+                  "2. Administrador\n"
+                  "0. Sair\n" +
+                  "-" * 50)
+
+    print(f"Marmota Mobilidade\nBem vindo ao sistema de histórico de falhas!\n" + "=" * 50)
+    while True:
+        try:
+            option = -1 if option != 0 else 0
+            if option == 0:
+                print("Saindo...")
+                break
+
+            print(login_menu)
+            option = int(input("Digite a opção desejada:\n"))
+
+            match option:
+                case 0:
+                    continue
+                case 1:
+                    print("Logando como operador...")
+                    option = start_system()
+                case 2:
+                    print("Logando como administrador...")
+                    option = start_system(True)
+                case _:
+                    print("Opção inválida")
+
+        except ValueError:
+            print("Valor inválido")
+
+
+start_login()

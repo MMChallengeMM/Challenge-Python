@@ -1,67 +1,60 @@
-# Sistema de Histórico de Falhas
+# Sistema de Histórico de Falhas do CCO
 
-Este é um sistema simples de histórico de falhas desenvolvido como parte do trabalho da disciplina 'Computational Thinking Using Python'. O programa apresenta menus para diferentes tipos de usuários e funcionalidades para gerenciar falhas no sistema.
-
-## Funcionalidades
-
-- **Login:**
-  - **Administrador**: Pode registrar novas falhas, exibir o histórico de falhas, gerar relatórios de falhas, e voltar para a tela de login.
-  - **Operador Geral**: Pode exibir o histórico de falhas, gerar relatórios de falhas, e voltar para a tela de login.
-
-- **Sistema de Histórico:**
-  - **Registrar Falha**: Adiciona uma nova falha ao sistema.
-  - **Exibir Histórico de Falhas**: Mostra o histórico de falhas registradas.
-  - **Gerar Relatório de Falhas**: Mostra o número total de falhas e o tipo de falha mais frequente.
-
-## Como Usar
-
-1. Execute o programa em um ambiente Python:
-    ```bash
-    python Main.py
-    ```
-
-2. O programa exibirá um menu de login. Escolha a opção desejada:
-    - `1` para logar como Administrador
-    - `2` para logar como Operador Geral
-    - `0` para sair do programa
-
-3. Dependendo do tipo de usuário selecionado, um novo menu será exibido com opções específicas para realizar tarefas de acordo com o nível de acesso.
-
-4. Siga as instruções na tela para registrar falhas, exibir o histórico, gerar relatórios, ou retornar ao menu de login.
-
-## Estrutura do Código
-
-- **Menus:**
-  - `menuLogin`: Tela de login com opções para Administrador, Operador Geral e sair.
-  - `menuSistemaAdm`: Menu para Administrador com opções de gerenciamento de falhas.
-  - `menuSistemaGeral`: Menu para Operador Geral com opções limitadas.
-
-- **Funções:**
-  - `opcaoPadrao()`: Retorna uma mensagem de opção inválida.
-  - `opcaoSair()`: Finaliza o programa.
-  - `logarAdm()`: Loga como Administrador.
-  - `logarGeral()`: Loga como Operador Geral.
-  - `voltarLogin()`: Retorna à tela de login.
-  - `registrarFalha()`: Adiciona uma falha ao sistema.
-  - `exibeHistorico()`: Exibe o histórico de falhas.
-  - `exibeRelatorio()`: Exibe o relatório de falhas.
-
-- **Lógica do Menu:**
-  - A lógica do menu é implementada utilizando um loop `while` que permite ao usuário navegar pelos menus e realizar ações conforme a sua permissão.
-
-## Requisitos
-
-- Python 3.x
-
-## Observações
-
-- O código utiliza códigos de formatação ANSI para colorir a saída no terminal.
-- As funcionalidades de adicionar falhas, exibir histórico e gerar relatórios são placeholders e devem ser implementadas conforme necessário.
-
-## Contribuições
-
-Contribuições para melhorar ou expandir o sistema são bem-vindas. Sinta-se à vontade para fazer um fork do repositório e enviar pull requests com melhorias ou correções.
+>Challenge FIAP X CCR
 
 ---
 
-**Data:** Setembro de 2024
+# Sumário
+1. #### [Descrição](#descrição-do-projeto)
+2. #### [Funcionalidades](#funcionalidades-principais)
+3. #### [Tecnologias](#tecnologias-utilizadas)
+4. #### [Como executar](#como-executar-o-projeto)
+5. #### [Diferenças entre sprints](#diferenças-entre-a-sprints)
+6. #### [Autores](#autores)
+---
+
+## Descrição do Projeto
+Este projeto tem como objetivo automatizar o monitoramento e o registro de falhas no Centro de Controle de Operações (CCO) utilizado pela CCR para gerenciar o tráfego ferroviário. O sistema permite o registro de falhas, a consulta de históricos e a geração de relatórios, aumentando a eficiência operacional e reduzindo a necessidade de intervenções manuais.
+
+## Funcionalidades Principais
+1. **Login e Controle de Acesso**: Usuários podem acessar o sistema com diferentes permissões:
+   - Administradores: controle total sobre os dados.
+   - Operadores: acesso limitado a consultas.
+2. **Registro de Falhas**: Administradores podem cadastrar novas falhas no sistema.
+3. **Consulta ao Histórico de Falhas**: Listagem de falhas com filtros específicos.
+4. **Geração de Relatórios**: Criação de relatórios baseados no histórico de falhas.
+
+## Tecnologias Utilizadas
+- Python
+- JSON (para armazenamento de dados)
+
+## Como Executar o Projeto
+1. Certifique-se de ter o Python instalado.
+2. Clone o repositório:
+   ```sh
+   git clone https://github.com/MMChallengeMM/Challenge-Python
+   ```
+3. Navegue até a pasta do projeto:
+   ```sh
+   cd Challenge-Python
+   ```
+4. Execute o script principal:
+   ```sh
+   python main.py
+   ```
+
+## Diferenças entre a Sprints
+### Sprint 1 > 2
+- Refatoração do código: alteração de nomeações de variáveis e funções para o padrão `snake_case`.
+- Atualização na formatação dos menus.
+
+### Sprint 2 > 3
+- Implementação da persistência de dados utilizando arquivos JSON.
+- Introdução da funcionalidade de relatórios com identificação da falha mais frequente.
+- Melhorias na interface de linha de comando para facilitar a interação do usuário.
+
+## Autores
+- **João Vinicius Alves - 559369**
+- **Juan Pablo Coelho - 560445**
+- **Matheu Marotto - 560447**
+
